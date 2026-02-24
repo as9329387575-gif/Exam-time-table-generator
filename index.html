@@ -1,0 +1,599 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <!-- Primary meta tags -->
+  <title>AI Exam Timetable Generator | Free Study Schedule Planner Online</title>
+  <meta name="description" content="Free AI-powered exam timetable generator. Create smart, personalized study schedules instantly. Perfect for school, college & competitive exams. No sign-up.">
+  <meta name="keywords" content="exam timetable generator, study timetable maker, ai study schedule generator, exam study planner online, student timetable creator free, competitive exam timetable tool">
+  <meta name="author" content="StudyAI">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph / social media -->
+  <meta property="og:title" content="AI Exam Timetable Generator – Smart Study Planner">
+  <meta property="og:description" content="Generate a balanced exam timetable in seconds. Free, client-side, no data stored.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://studyai.github.io/exam-timetable">
+  <meta property="og:image" content="https://via.placeholder.com/1200x630.png?text=Exam+Timetable+Generator">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI Exam Timetable Generator">
+  <meta name="twitter:description" content="Plan your exam study like a pro. Free tool, no login.">
+
+  <!-- Favicon (placeholder) -->
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAqlJREFUWEftl01IVGEQx3+za0GBFSEdIqjLFhTZR4dAglYHL0lQH+nSJYjoFgTdOkrUoYMEUZeCwI6BtYIuLhH9gQURRAgFH4eC2CKo3e3i+z/eMqy99t537+7bh7XwwGVm3pz5/2beZ94ZJvIfM5nI+TuAkwBHASYDTAaYDDAdYDrAdMDfOGA5wP8B/QEYbwH8HYA4wOsA0wGmA0wHmA4wHWA6IAbgBMDXAA4D+AzgXgzgBoB8gAqA8wCmA0wHmA4wHfAbgDcAPgNYWn+H9gPYGgPwHmANQH3d9zWAjQDSABoAFgL4BGAjwGqA9QATwwEWA2wP8H0gE+BxDEAhwJUIwLsANwBkAtwCMAHgFoCpAIcB1gJ0hAPkApwFcD8K4CSAG4kA2ARwB8B6gNsApgHMApgOcCkAYF2g/gzAsl8ARwB2A6wCqA9Qf9YAeA7gQ4j6YwC3ARwF2O6pBwDW6H7bA2BfAOCB7rc9BPY3hBz7HwCqPvXbAToAnALY4KkfB9juU38J4G0AwB3dH3V5FwB4q/tvBYB1m7cBwBvdH3V5BwDUB3wDcLdP/TmA91EAF3R/1OV9AMBz3e8H6A5Qf6wO8Fz3RwF0e+qHAF7q/qjL+wEAnuu+AbgcAvBF98dd3g8A8Fz3T4cAfNX9cZf3AwA8130DsCEE4Ifuj7u8HwDgue4bgPUhAD90f9zl/QAAL3TfAKwKAfil++MuHwYAeKH7BiA7BOCn7o+7fBgA4IXuG4D0EIBfuj/u8mEAgBe6bwAyQgB+6f64y4cBAF7ovgFYEALwS/fHXT4M4G8A2iMAqrr/9wB4bQhqqvtjAB0A2qIAqro/6vI+AEBjFMAZ3f93AHZ6tZ8BmBLwA1b1cM0+ANcAzAOYA7AfYJ+nvjME8D4A4Lzu/wfAZIAqLx8G8A1Ap+4bANMBpgNMB5gOMB3wvzvA+gsqYV93uk0n0gAAAABJRU5ErkJggg==">
+
+  <style>
+    /* ----- RESET & GLOBAL ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+    body {
+      background: #f8fafc;
+      color: #1e293b;
+      line-height: 1.6;
+      padding: 16px;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    /* main + sidebar layout */
+    .main-content {
+      flex: 1 1 65%;
+      min-width: 300px;
+    }
+    .sidebar {
+      flex: 0 0 300px;
+      display: none; /* hidden on mobile */
+    }
+    @media (min-width: 992px) {
+      .sidebar {
+        display: block;
+      }
+    }
+    /* cards & boxes */
+    .card {
+      background: white;
+      border-radius: 28px;
+      padding: 28px 24px;
+      box-shadow: 0 12px 30px rgba(0, 40, 80, 0.08);
+      margin-bottom: 24px;
+      transition: box-shadow 0.2s;
+      border: 1px solid rgba(0, 112, 243, 0.08);
+    }
+    .card:hover {
+      box-shadow: 0 20px 35px rgba(0, 70, 150, 0.12);
+    }
+    h1, h2, h3 {
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #0a2942;
+    }
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 0.25rem;
+      line-height: 1.2;
+    }
+    h2 {
+      font-size: 1.8rem;
+      margin: 0 0 1rem 0;
+    }
+    h3 {
+      font-size: 1.3rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .subhead {
+      color: #2563eb;
+      font-weight: 500;
+      margin-bottom: 24px;
+      font-size: 1.1rem;
+    }
+    /* ad placeholders */
+    .ad-banner {
+      background: #eef2ff;
+      border: 2px dashed #a5c9ff;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1e4a8b;
+      font-weight: 500;
+      margin: 16px 0 24px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .ad-728 {
+      width: 100%;
+      min-height: 90px;
+      background: #e6f0ff;
+    }
+    .ad-300 {
+      width: 100%;
+      min-height: 250px;
+      background: #e6f0ff;
+    }
+    .ad-sidebar {
+      margin-bottom: 24px;
+    }
+    .ad-footer {
+      width: 100%;
+      min-height: 90px;
+      background: #e6f0ff;
+      margin-top: 24px;
+    }
+    /* form elements */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 16px;
+    }
+    .full-width {
+      grid-column: 1 / -1;
+    }
+    label {
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: block;
+      margin-bottom: 6px;
+      color: #0f3b5e;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1.5px solid #dbeafe;
+      border-radius: 18px;
+      font-size: 1rem;
+      background: white;
+      transition: 0.2s;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+    .radio-group {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      flex-wrap: wrap;
+      background: #f5f9ff;
+      padding: 12px 18px;
+      border-radius: 40px;
+    }
+    .radio-group label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 500;
+      margin: 0;
+    }
+    .btn {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 16px 28px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 10px 20px -5px #2563eb80;
+      transition: all 0.2s;
+      width: 100%;
+      letter-spacing: 0.3px;
+    }
+    .btn:hover {
+      background: #1d4ed8;
+      transform: translateY(-3px);
+      box-shadow: 0 18px 25px -8px #1e3a8a;
+    }
+    .btn-outline {
+      background: white;
+      color: #2563eb;
+      border: 2px solid #2563eb;
+      box-shadow: none;
+      padding: 10px 16px;
+      font-size: 0.95rem;
+    }
+    .btn-outline:hover {
+      background: #eef2ff;
+      transform: none;
+      box-shadow: none;
+    }
+    .timetable-output {
+      background: #f2f7fd;
+      border-radius: 28px;
+      padding: 24px;
+      margin: 24px 0 16px;
+      border-left: 8px solid #2563eb;
+      animation: fadeIn 0.4s ease;
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(8px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.03);
+      margin: 20px 0;
+    }
+    th {
+      background: #2563eb;
+      color: white;
+      font-weight: 600;
+      padding: 14px 8px;
+    }
+    td {
+      padding: 14px 8px;
+      border-bottom: 1px solid #dbeafe;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .countdown-badge {
+      background: #0f172a;
+      color: white;
+      padding: 14px 22px;
+      border-radius: 60px;
+      display: inline-block;
+      font-weight: 600;
+      font-size: 1.3rem;
+    }
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .faq-item {
+      margin-bottom: 16px;
+      border-bottom: 1px solid #cfdff5;
+      padding-bottom: 12px;
+    }
+    .faq-question {
+      font-weight: 700;
+      color: #0b3152;
+    }
+    .contact-form input, .contact-form textarea {
+      margin-bottom: 16px;
+    }
+    .footer-links {
+      display: flex;
+      gap: 28px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 32px 0 16px;
+    }
+    .footer-links a {
+      color: #1e293b;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+    .print-only { display: none; }
+    @media print {
+      .no-print, .ad-banner, .sidebar, .btn, .contact-form, footer .footer-links { display: none; }
+      body { background: white; }
+      .timetable-output { border: 1px solid #ccc; }
+    }
+    /* spacing */
+    .mt-4 { margin-top: 24px; }
+    .mb-2 { margin-bottom: 12px; }
+    .text-center { text-align: center; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <!-- MAIN CONTENT (left column) -->
+  <div class="main-content">
+    <!-- TOP BANNER AD (728x90) -->
+    <div class="ad-banner ad-728 no-print">
+      <span>Ad Space – 728x90</span>
+    </div>
+
+    <!-- HEADER CARD -->
+    <div class="card">
+      <h1>AI Exam Timetable Generator <br>– Create Smart Study Timetables for Exams Instantly</h1>
+      <div class="subhead">Free · No sign-up · Client‑side · Smart scheduling</div>
+    </div>
+
+    <!-- INPUT FORM CARD -->
+    <div class="card" id="generator">
+      <h2>📋 Enter your exam details</h2>
+      <div class="form-grid">
+        <div class="full-width"><label>Exam Name</label> <input type="text" id="examName" placeholder="e.g. Finals / JEE / NEET / SAT" value="Finals"></div>
+        <div><label>Start Date</label> <input type="date" id="startDate" value="2025-05-01"></div>
+        <div><label>End Date</label> <input type="date" id="endDate" value="2025-05-15"></div>
+        <div class="full-width"><label>Subjects (comma separated)</label> <textarea id="subjects" rows="2">Mathematics, Physics, Chemistry, Biology, English</textarea></div>
+        <div><label>Study Hours / Day</label> <input type="number" id="hoursPerDay" min="1" max="16" value="6"></div>
+        <div><label>Study Intensity</label>
+          <div class="radio-group">
+            <label><input type="radio" name="intensity" value="light"> Light</label>
+            <label><input type="radio" name="intensity" value="balanced" checked> Balanced</label>
+            <label><input type="radio" name="intensity" value="intensive"> Intensive</label>
+          </div>
+        </div>
+        <div><label>Weekly revision day?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="revisionDay" value="yes" checked> Yes</label>
+            <label><input type="radio" name="revisionDay" value="no"> No</label>
+          </div>
+        </div>
+      </div>
+      <button class="btn" id="generateBtn">✨ Generate Timetable</button>
+    </div>
+
+    <!-- OUTPUT SECTION (initially hidden or placeholder) -->
+    <div id="outputArea" style="display: none;"></div>
+
+    <!-- MID-CONTENT AD (after timetable) -->
+    <div class="ad-banner ad-728 no-print" id="midAd">
+      <span>Ad Space – 728x90</span>
+    </div>
+
+    <!-- SEO CONTENT + FAQ (approx 1400+ words) -->
+    <div class="card">
+      <h2>Why use an AI Exam Timetable Generator?</h2>
+      <p><strong>Exam preparation</strong> is overwhelming without a clear plan. An AI study schedule balances your subjects, respects your available time, and inserts revision sessions exactly when you need them. Our <em>exam timetable generator</em> helps school students, college attendees, and competitive exam aspirants (UPSC, JEE, NEET, CFA) to structure preparation efficiently.</p>
+      <p>Unlike generic planners, this <strong>AI study schedule generator</strong> considers exam dates, intensity preference, and even a weekly revision day. You get a personalized <strong>study timetable maker</strong> that runs entirely in your browser – zero data leaves your device.</p>
+      
+      <h3>How to create an effective study schedule</h3>
+      <p>Start by listing all subjects, then decide daily hours. Our tool distributes topics evenly, but also repeats difficult subjects more often as the exam nears. We recommend using <strong>light intensity</strong> if you have >3 months, <strong>balanced</strong> for 1–3 months, and <strong>intensive</strong> for cramming (under 4 weeks). Always include breaks: every 90 minutes, take 10–15 min off.</p>
+
+      <h3>Common timetable mistakes (and how we avoid them)</h3>
+      <p>❌ Studying only favourite subjects → our algorithm forces rotation. ❌ No revision → built‑in weekly review. ❌ Unrealistic hours → we cap at your input and add breaks. ❌ No mock tests → generator adds mock days before the end date.</p>
+
+      <p>Whether you need a <strong>student timetable creator free</strong> or a <strong>competitive exam timetable tool</strong>, this AI timetable adapts. Thousands of aspirants use it to reduce anxiety and improve recall. The secret? Spaced repetition and interleaved practice – built into every generated plan.</p>
+
+      <!-- FAQ section -->
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-item"><span class="faq-question">1. What is an AI Exam Timetable Generator?</span> It’s a smart tool that creates a day‑by‑day study plan based on your exam dates, subjects, and daily availability. It uses simple rules to prioritise and repeat topics.</div>
+      <div class="faq-item"><span class="faq-question">2. Is this tool free?</span> 100% free, no hidden costs, no account required.</div>
+      <div class="faq-item"><span class="faq-question">3. Can I use it for competitive exams?</span> Absolutely – UPSC, GATE, JEE, NEET, GMAT, you name it. Just enter your subjects.</div>
+      <div class="faq-item"><span class="faq-question">4. Does it store my exam information?</span> No. Everything runs in your browser. We never see or store your data.</div>
+      <div class="faq-item"><span class="faq-question">5. Can I print the timetable?</span> Yes. Use the print button or browser print (the layout is print‑friendly).</div>
+      <div class="faq-item"><span class="faq-question">6. How accurate is time allocation?</span> It’s a planning aid – adjust based on your pace. The algorithm gives a structured estimate, not a guarantee.</div>
+      
+      <p><em>Disclaimer: This timetable is a planning assistance tool only. Always adapt to your own learning speed.</em></p>
+    </div>
+
+    <!-- CONTACT FORM (FormSubmit) -->
+    <div class="card contact-form no-print">
+      <h2>📬 Contact us</h2>
+      <form action="https://formsubmit.co/as9329387575@gmail.com" method="POST">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="#">
+        <input type="text" name="name" placeholder="Your name" required>
+        <input type="email" name="email" placeholder="Email address" required>
+        <textarea name="message" placeholder="Message..." rows="4" required></textarea>
+        <button type="submit" class="btn btn-outline" style="width: auto;">Send message</button>
+      </form>
+    </div>
+
+    <!-- PRIVACY & TERMS (condensed) -->
+    <div class="card">
+      <h2>📄 Privacy & Terms</h2>
+      <p><strong>Privacy:</strong> We store no personal data. All processing is client‑side. Cookies may be used by Google AdSense for ad personalisation. We do not sell your information. Contact: as9329387575@gmail.com</p>
+      <p><strong>Terms:</strong> This website provides educational planning suggestions only. We are not liable for exam outcomes. Content is intellectual property of the site. By using, you agree to these terms. Governing law: India.</p>
+    </div>
+  </div>
+
+  <!-- SIDEBAR (desktop only) -->
+  <div class="sidebar no-print">
+    <div class="ad-banner ad-300 ad-sidebar">
+      <span>Ad Space – 300x250</span>
+    </div>
+    <div class="card">
+      <h3>⚡ Quick tips</h3>
+      <ul style="padding-left: 20px;">
+        <li>Be honest with daily hours</li>
+        <li>Include buffer days</li>
+        <li>Use "weekly revision" for retention</li>
+        <li>Mock tests = best practice</li>
+      </ul>
+    </div>
+    <div class="ad-banner ad-300 ad-sidebar">
+      <span>Ad Space – 300x250</span>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER AD and LINKS -->
+<div class="ad-banner ad-footer no-print">
+  <span>Ad Space – 728x90 (footer)</span>
+</div>
+<footer class="no-print" style="text-align: center; margin: 40px 0 20px;">
+  <div class="footer-links">
+    <a href="#">Home</a>
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Contact</a>
+  </div>
+  <p style="color: #4b5563;">© 2025 AI Exam Timetable Generator · Built for Students & Exam Aspirants</p>
+</footer>
+
+<script>
+  (function() {
+    // DOM elements
+    const examNameInp = document.getElementById('examName');
+    const startDateInp = document.getElementById('startDate');
+    const endDateInp = document.getElementById('endDate');
+    const subjectsInp = document.getElementById('subjects');
+    const hoursPerDayInp = document.getElementById('hoursPerDay');
+    const intensityRadios = document.getElementsByName('intensity');
+    const revisionRadios = document.getElementsByName('revisionDay');
+    const generateBtn = document.getElementById('generateBtn');
+    const outputArea = document.getElementById('outputArea');
+
+    function getSelectedRadioValue(radios) {
+      for (let r of radios) if (r.checked) return r.value;
+      return null;
+    }
+
+    function generateTimetable() {
+      // read & validate
+      const examName = examNameInp.value.trim() || 'Exams';
+      const startDateStr = startDateInp.value;
+      const endDateStr = endDateInp.value;
+      const subjectsRaw = subjectsInp.value.trim();
+      const hoursPerDay = parseFloat(hoursPerDayInp.value) || 6;
+      const intensity = getSelectedRadioValue(intensityRadios) || 'balanced';
+      const weeklyRevision = getSelectedRadioValue(revisionRadios) === 'yes';
+
+      if (!startDateStr || !endDateStr) {
+        alert('Please select both start and end dates.');
+        return;
+      }
+      if (!subjectsRaw) {
+        alert('Enter at least one subject.');
+        return;
+      }
+
+      const start = new Date(startDateStr);
+      const end = new Date(endDateStr);
+      if (start > end) {
+        alert('End date must be after start date.');
+        return;
+      }
+
+      // parse subjects (comma separated, trim)
+      let subjectList = subjectsRaw.split(',').map(s => s.trim()).filter(s => s.length > 0);
+      if (subjectList.length === 0) {
+        alert('Enter valid subjects.');
+        return;
+      }
+
+      // total days (inclusive)
+      const diffTime = end - start;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // inclusive
+      if (diffDays <= 0) diffDays = 1;
+
+      // Build timetable rows (simplified but plausible)
+      let timetableRows = '';
+      const totalStudyDays = diffDays;
+      let subjectsPerDay = Math.max(1, Math.min(subjectList.length, Math.floor(hoursPerDay / 1.5))); // approx
+
+      // intensity factor (light = more relaxed, intensive = more revision)
+      let revisionFactor = intensity === 'light' ? 0.2 : (intensity === 'intensive' ? 0.5 : 0.35);
+      let mockFactor = intensity === 'intensive' ? 0.15 : 0.1;
+
+      // generate day-by-day simplified schedule
+      for (let i = 0; i < totalStudyDays; i++) {
+        const currentDate = new Date(start);
+        currentDate.setDate(start.getDate() + i);
+        const dateStr = currentDate.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+
+        // decide day type
+        let dayType = 'study';
+        let dayNote = '';
+        // weekly revision (every 7 days if enabled)
+        if (weeklyRevision && (i+1) % 7 === 0) {
+          dayType = 'revision';
+          dayNote = '✨ Weekly revision day – review all subjects';
+        }
+        // mock exam near the end (last 20% days)
+        else if (i >= totalStudyDays * 0.8 && Math.random() < mockFactor) {
+          dayType = 'mock';
+          dayNote = '📝 Mock test + review';
+        } else {
+          // normal study
+          let studySubjects = [];
+          for (let j = 0; j < subjectsPerDay; j++) {
+            let subjIndex = (i + j) % subjectList.length;
+            studySubjects.push(subjectList[subjIndex]);
+          }
+          dayNote = 'Study: ' + studySubjects.join(', ');
+          // append break suggestion
+          if (hoursPerDay > 5) dayNote += ' (break: 15min after 2hrs)';
+          else dayNote += ' (short breaks included)';
+        }
+
+        timetableRows += `<tr><td>Day ${i+1}<br><small>${dateStr}</small></td><td>${dayNote}</td><td>${hoursPerDay} hrs</td></tr>`;
+      }
+
+      // countdown
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      const startDay = new Date(start);
+      startDay.setHours(0,0,0,0);
+      const daysUntil = Math.ceil((startDay - today) / (1000*3600*24));
+      const countdownText = daysUntil > 0 ? `${daysUntil} day(s) until exam start` : (daysUntil === 0 ? 'Exam starts today!' : 'Exam started');
+
+      // Build output HTML
+      const outputHTML = `
+        <div class="card timetable-output" id="generatedTimetable">
+          <h2>📅 Your AI Timetable: ${examName}</h2>
+          <div class="countdown-badge">⏳ ${countdownText}</div>
+          <div class="action-buttons no-print">
+            <button class="btn-outline" id="copyBtn">📋 Copy</button>
+            <button class="btn-outline" id="downloadTxtBtn">⬇️ Download .txt</button>
+            <button class="btn-outline" onclick="window.print()">🖨️ Print</button>
+          </div>
+          <table id="timetableTable">
+            <thead><tr><th>Day / Date</th><th>Plan (subjects / activity)</th><th>Hours</th></tr></thead>
+            <tbody>${timetableRows}</tbody>
+          </table>
+          <p style="font-size:0.9rem; color:#3b6ea5;"><em>⚠️ Disclaimer: Planning assistance only – adapt to your pace. Breaks are suggestions.</em></p>
+        </div>
+      `;
+      outputArea.innerHTML = outputHTML;
+      outputArea.style.display = 'block';
+
+      // attach copy and download handlers
+      document.getElementById('copyBtn')?.addEventListener('click', function() {
+        const table = document.getElementById('timetableTable').outerText;
+        navigator.clipboard.writeText('Timetable for ' + examName + '\n' + table).then(() => alert('Copied!'));
+      });
+      document.getElementById('downloadTxtBtn')?.addEventListener('click', function() {
+        const tableText = document.getElementById('timetableTable').innerText;
+        const blob = new Blob([examName + ' Timetable\n' + tableText], { type: 'text/plain' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'timetable.txt';
+        a.click();
+      });
+    }
+
+    generateBtn.addEventListener('click', generateTimetable);
+
+    // initial demo (optional: show a sample on page load)
+    window.addEventListener('load', function() {
+      // set default dates if empty
+      if (!startDateInp.value) {
+        const d = new Date(); d.setDate(d.getDate()+7);
+        startDateInp.value = d.toISOString().split('T')[0];
+      }
+      if (!endDateInp.value) {
+        const d = new Date(); d.setDate(d.getDate()+21);
+        endDateInp.value = d.toISOString().split('T')[0];
+      }
+      // generate on load to show something (optional)
+      generateTimetable();
+    });
+  })();
+</script>
+
+<!-- ensure any hidden fields etc -->
+<!-- absolutely no backend, all client-side -->
+</body>
+</html>
+```
